@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Button, Flex, Text } from "@chakra-ui/react";
-// import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { ModalView } from "../../../atoms/authModalAtom";
-// import { auth } from "../../../firebase/clientApp";
-// import { FIREBASE_ERRORS } from "../../../firebase/errors";
+import { auth } from "../../../firebase/clientApp";
+import { FIREBASE_ERRORS } from "../../../firebase/errors";
 import InputItem from "../../Layouts/InputItem";
 
 type LoginProps = {
@@ -17,8 +17,8 @@ const Login: React.FC<LoginProps> = ({ toggleView }) => {
   });
   const [formError, setFormError] = useState("");
 
-  //   const [signInWithEmailAndPassword, _, loading, authError] =
-  //     useSignInWithEmailAndPassword(auth);
+  const [signInWithEmailAndPassword, _, loading, authError] =
+    useSignInWithEmailAndPassword(auth);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,8 +27,7 @@ const Login: React.FC<LoginProps> = ({ toggleView }) => {
       return setFormError("Please enter a valid email");
     }
 
-    // Valid form inputs
-    // signInWithEmailAndPassword(form.email, form.password);
+    signInWithEmailAndPassword(form.email, form.password);
   };
 
   const onChange = ({
@@ -55,17 +54,17 @@ const Login: React.FC<LoginProps> = ({ toggleView }) => {
         type="password"
         onChange={onChange}
       />
-      {/* <Text textAlign="center" mt={2} fontSize="10pt" color="red">
+      <Text textAlign="center" mt={2} fontSize="10pt" color="red">
         {formError ||
           FIREBASE_ERRORS[authError?.message as keyof typeof FIREBASE_ERRORS]}
-      </Text> */}
+      </Text>
       <Button
         width="100%"
         height="36px"
         mb={2}
         mt={2}
         type="submit"
-        // isLoading={loading}
+        isLoading={loading}
       >
         Log In
       </Button>

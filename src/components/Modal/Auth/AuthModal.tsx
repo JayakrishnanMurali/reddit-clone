@@ -4,12 +4,15 @@ import {
   ModalBody,
   Flex,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 import { authModalState } from "../../../atoms/authModalAtom";
+import { auth } from "../../../firebase/clientApp";
 import ModalWrapper from "../ModalWrapper";
 import AuthInputs from "./Input";
 import OAuthButtons from "./OAuthButtons";
+import ResetPassword from "./ResetPassword";
 
 type AuthModalProps = {};
 
@@ -27,6 +30,12 @@ const AuthModal: React.FC<AuthModalProps> = () => {
       view: view as typeof modalState.view,
     });
   };
+
+  const [user, _, error] = useAuthState(auth);
+
+  useEffect(() => {
+    if (user) handleClose();
+  }, [user]);
 
   return (
     <ModalWrapper isOpen={modalState.open} onClose={handleClose}>
@@ -56,8 +65,7 @@ const AuthModal: React.FC<AuthModalProps> = () => {
               <AuthInputs toggleView={toggleView} />
             </>
           ) : (
-            <></>
-            // <ResetPassword toggleView={toggleView} />
+            <ResetPassword toggleView={toggleView} />
           )}
         </Flex>
       </ModalBody>
